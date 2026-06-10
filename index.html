@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İSG Sınavı Hazırlık Testi</title>
+    <title>İSG Uzmanlık Sınavı (Gelişmiş Senaryolu)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
         
         :root {
             --bg-color: #0f172a;
-            --container-bg: rgba(30, 41, 59, 0.8);
+            --container-bg: rgba(30, 41, 59, 0.85);
             --primary: #3b82f6;
             --primary-hover: #2563eb;
             --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
+            --text-muted: #94a3b8;
             --success: #10b981;
             --danger: #ef4444;
             --option-bg: rgba(51, 65, 85, 0.6);
             --option-hover: rgba(51, 65, 85, 1);
+            --exp-bg: rgba(15, 23, 42, 0.95);
         }
 
         body {
@@ -33,188 +34,85 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             box-sizing: border-box;
         }
 
         .container {
             background: var(--container-bg);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px;
+            border-radius: 20px;
+            padding: 35px;
             max-width: 800px;
             width: 100%;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
             position: relative;
             overflow: hidden;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
+        .header { text-align: center; margin-bottom: 25px; }
         .title {
-            font-size: 28px;
-            font-weight: 800;
+            font-size: 26px; font-weight: 800;
             background: linear-gradient(to right, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
         }
-
         .stats {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: var(--text-muted);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between; font-size: 14px;
+            color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px; margin-bottom: 25px;
         }
-
-        .question-text {
-            font-size: 20px;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            font-weight: 600;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
+        .question-text { font-size: 18px; line-height: 1.6; margin-bottom: 25px; font-weight: 600; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
         .option-btn {
-            background: var(--option-bg);
-            border: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-main);
-            padding: 16px 20px;
-            border-radius: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
+            background: var(--option-bg); border: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-main); padding: 15px 20px; border-radius: 12px;
+            font-size: 15px; cursor: pointer; text-align: left;
+            transition: all 0.2s ease; font-family: inherit; line-height: 1.4;
         }
-
-        .option-btn:hover:not(:disabled) {
-            background: var(--option-hover);
-            transform: translateY(-2px);
-            border-color: rgba(255,255,255,0.2);
+        .option-btn:hover:not(:disabled) { background: var(--option-hover); transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
+        .option-btn.correct { background: rgba(16, 185, 129, 0.15); border-color: var(--success); color: var(--success); }
+        .option-btn.wrong { background: rgba(239, 68, 68, 0.15); border-color: var(--danger); color: var(--danger); }
+        .option-btn:disabled { cursor: default; }
+        
+        .explanation-box {
+            display: none; background: var(--exp-bg); border-left: 4px solid var(--primary);
+            padding: 15px 20px; border-radius: 8px; margin-bottom: 25px;
+            font-size: 15px; line-height: 1.6; color: #e2e8f0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            animation: slideDown 0.4s ease forwards;
         }
-
-        .option-btn.correct {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: var(--success);
-            color: var(--success);
-        }
-
-        .option-btn.wrong {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-
-        .option-btn:disabled {
-            cursor: default;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: flex-end;
-        }
-
+        .explanation-box strong { color: #cbd5e1; }
+        
+        .controls { display: flex; justify-content: flex-end; }
         .next-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: none;
+            background: var(--primary); color: white; border: none;
+            padding: 14px 28px; border-radius: 12px; font-size: 15px;
+            font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: none;
         }
-
-        .next-btn:hover {
-            background: var(--primary-hover);
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
-        }
-
-        .result-screen {
-            display: none;
-            text-align: center;
-        }
-
+        .next-btn:hover { background: var(--primary-hover); box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4); }
+        
+        .result-screen { display: none; text-align: center; }
         .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 8px solid var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            font-weight: 800;
-            margin: 0 auto 30px;
+            width: 140px; height: 140px; border-radius: 50%; border: 8px solid var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: 800; margin: 0 auto 30px;
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }
 
-        .restart-btn {
-            background: transparent;
-            color: var(--text-main);
-            border: 2px solid var(--primary);
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease forwards; }
 
-        .restart-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        /* Mobile Responsiveness */
         @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-                border-radius: 16px;
-            }
-            .title {
-                font-size: 22px;
-            }
-            .question-text {
-                font-size: 18px;
-            }
-            .option-btn {
-                padding: 12px 16px;
-                font-size: 15px;
-            }
-            .score-circle {
-                width: 120px;
-                height: 120px;
-                font-size: 28px;
-            }
+            .container { padding: 20px; border-radius: 16px; }
+            .title { font-size: 22px; }
+            .question-text { font-size: 16px; }
+            .option-btn { padding: 12px 16px; font-size: 14px; }
+            .explanation-box { font-size: 14px; padding: 12px 15px; }
+            .next-btn { width: 100%; text-align: center; padding: 15px; }
+            .score-circle { width: 120px; height: 120px; font-size: 28px; }
         }
     </style>
 </head>
@@ -222,112 +120,44 @@
 
     <div class="container" id="quiz-container">
         <div class="header">
-            <h1 class="title">İSG Sınavı Hazırlık</h1>
+            <h1 class="title">İSG Sınavı: Açıklamalı & Senaryolu</h1>
         </div>
         
         <div class="stats">
-            <span id="question-counter">Soru: 1 / 100</span>
+            <!-- Dinamik olarak JS tarafından ezilecek olan bekleme mesajı -->
+            <span id="question-counter">Soru Sayısı Hesaplanıyor...</span>
             <span id="score-display">Doğru: 0 | Yanlış: 0</span>
         </div>
 
         <div id="question-screen">
-            <div class="question-text fade-in" id="question-text">Yükleniyor...</div>
+            <div class="question-text fade-in" id="question-text">Sistem Yükleniyor...</div>
             <div class="options-grid fade-in" id="options-grid"></div>
             
+            <div id="explanation-box" class="explanation-box"></div>
+
             <div class="controls">
                 <button class="next-btn" id="next-btn" onclick="nextQuestion()">Sonraki Soru ➔</button>
             </div>
         </div>
 
         <div id="result-screen" class="result-screen">
-            <h2 style="font-size: 28px; margin-bottom: 20px;">Sınav Tamamlandı!</h2>
-            <div class="score-circle" id="final-score">0/100</div>
+            <h2 style="font-size: 26px; margin-bottom: 20px;">Sınav Tamamlandı!</h2>
+            <div class="score-circle" id="final-score">0/0</div>
             <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.6;">
-                Sınava hazırlık sürecinde çözdüğünüz sorular umarım finalde karşınıza çıkar.<br>
-                Başarılar!
+                Tebrikler! MDB 106 Denemesi ve Açıklamalı İSG sorularını tamamladınız.
             </p>
-            <button class="restart-btn" onclick="startQuiz()">Yeniden Başla</button>
+            <button class="next-btn" style="display:inline-block;" onclick="startQuiz()">Yeniden Başla</button>
         </div>
     </div>
 
     <script>
-        // 100 ISG Sorusu Havuzu
-        const allQuestions = [
-            { q: "Mavi renkli bir güvenlik işaretinin anlamı nedir?", options: ["Tehlike", "Uyarı", "Zorunluluk", "İlk Yardım"], ans: 2 },
-            { q: "Aşağıdakilerden hangisi iş kazası değildir?", options: ["İşverenin servisiyle işe giderken kaza yapmak", "İşyerinde kalp krizi geçirmek", "Kendi aracıyla işe gelirken kaza yapmak", "İş için başka şehre gönderilirken kaza yapmak"], ans: 2 },
-            { q: "Heinrich kaza piramidine göre 300 ramak kala olaya karşılık kaç ağır kaza meydana gelir?", options: ["1", "29", "10", "100"], ans: 0 },
-            { q: "NACE kodu işyerlerinde neyi belirlemek için kullanılır?", options: ["İşçi sayısını", "Tehlike sınıfını", "Maaş miktarını", "Çalışma saatlerini"], ans: 1 },
-            { q: "Çok tehlikeli sınıfta yer alan bir işyerinde risk değerlendirmesi en geç kaç yılda bir yenilenmelidir?", options: ["2", "4", "6", "1"], ans: 0 },
-            { q: "Zehirli bir maddenin daha az zehirli bir maddeyle değiştirilmesine risk yönetiminde ne ad verilir?", options: ["Yok etme", "İkame", "İzolasyon", "KKD Kullanımı"], ans: 1 },
-            { q: "Kırmızı renkli bir yangın işaretinin şekli aşağıdakilerden hangisidir?", options: ["Daire", "Eşkenar üçgen", "Kare veya dikdörtgen", "Altıgen"], ans: 2 },
-            { q: "İşveren, bir iş kazasını SGK'ya kazadan sonraki en geç kaç iş günü içinde bildirmek zorundadır?", options: ["1", "2", "3", "5"], ans: 2 },
-            { q: "Tehlikeli sınıfta yer alan işyerlerinde çalışanların temel İSG eğitimleri kaç yılda bir yenilenir?", options: ["Yılda 1", "2 yılda 1", "3 yılda 1", "5 yılda 1"], ans: 1 },
-            { q: "Kulak koruyucu kullanıldığı hesaba katılarak geçilmemesi gereken maruziyet sınır değeri kaç dB(A)'dır?", options: ["80", "85", "87", "90"], ans: 2 },
-            { q: "Domino Etkisi Kuramına göre kazaları önlemek için müdahale edilmesi gereken '3. Taş' nedir?", options: ["Kalıtsal çevre", "Kişisel kusurlar", "Güvensiz hareket ve şartlar", "Yaralanma"], ans: 2 },
-            { q: "Sarı zemin üzerine siyah piktogram bulunan eşkenar üçgen işaretinin anlamı nedir?", options: ["Emredici", "Yasaklayıcı", "Uyarı", "İlk yardım"], ans: 2 },
-            { q: "Az tehlikeli sınıfta yer alan bir işyerinde acil durum planı en geç kaç yılda bir yenilenir?", options: ["2", "4", "6", "10"], ans: 2 },
-            { q: "Aşağıdakilerden hangisi bir Kişisel Koruyucu Donanım (KKD) değildir?", options: ["Baret", "Çelik burunlu ayakkabı", "Yangın tüpü", "Koruyucu gözlük"], ans: 2 },
-            { q: "Yeşil renkli güvenlik işaretleri hangi durumu ifade eder?", options: ["Yasaklama", "Acil çıkış ve ilk yardım", "Dikkat", "Zorunlu eylem"], ans: 1 },
-            { q: "Tehlikeli sınıfta temel İSG eğitimi süresi en az kaç saattir?", options: ["8", "12", "16", "24"], ans: 1 },
-            { q: "Çok tehlikeli sınıfta sağlık raporları en az ne sıklıkla yenilenmelidir?", options: ["Yılda 1 kez", "3 yılda 1 kez", "5 yılda 1 kez", "10 yılda 1 kez"], ans: 0 },
-            { q: "Aşağıdakilerden hangisi emredici (mavi) bir işaretin şeklidir?", options: ["Üçgen", "Kare", "Daire", "Dikdörtgen"], ans: 2 },
-            { q: "Aşağıdakilerden hangisi ikameye örnek değildir?", options: ["Asbest yerine cam yünü kullanmak", "Tozlu ortamda maske takmak", "Gürültülü motoru sessiz motorla değiştirmek", "Solvent bazlı boya yerine su bazlı boya kullanmak"], ans: 1 },
-            { q: "Avrupa Birliği ekonomik faaliyet sınıflandırması sisteminin kısa adı nedir?", options: ["OHSAS", "ISG-KATİP", "NACE", "ILO"], ans: 2 },
-            { q: "Risklerin kaynağında yok edilemediği durumlarda başvurulan son çare aşağıdakilerden hangisidir?", options: ["Mühendislik önlemleri", "İdari önlemler", "Kişisel Koruyucu Donanım (KKD) kullanımı", "Tehlikeyi izole etme"], ans: 2 },
-            { q: "Yasaklayıcı işaretlerde (Kırmızı) piktogramın üzerinde soldan sağa doğru aşağı inen çizginin açısı yaklaşık kaç derecedir?", options: ["30", "45", "60", "90"], ans: 1 },
-            { q: "İş sağlığı ve güvenliğinde en yüksek maruziyet eylem değeri kaç desibeldir?", options: ["80", "85", "87", "90"], ans: 1 },
-            { q: "Aşağıdakilerden hangisi iş kazası kapsamına girer?", options: ["İşe yürüyerek gelirken düşmek", "Emziren kadının çocuğuna süt verdiği saatte kaza geçirmesi", "Tatil gününde evde yaralanmak", "İşyerinden tamamen ayrıldıktan sonra markette düşmek"], ans: 1 },
-            { q: "Heinrich kaza piramidi hangi kuralı ifade eder?", options: ["1-10-100 kuralı", "1-29-300 kuralı", "5-50-500 kuralı", "3-30-300 kuralı"], ans: 1 },
-            { q: "Kazaların temel nedeni olan 'Güvensiz hareketler' kimden kaynaklanır?", options: ["Makinelerden", "Ortam şartlarından", "İnsandan", "Doğal afetlerden"], ans: 2 },
-            { q: "Çok tehlikeli sınıfta yer alan işyerleri için temel İSG eğitimi kaç saat olmalıdır?", options: ["8 saat", "12 saat", "16 saat", "32 saat"], ans: 2 },
-            { q: "KKD'ler üzerinde mutlaka bulunması gereken kalite ve uygunluk işareti hangisidir?", options: ["TSE", "ISO", "CE", "OHSAS"], ans: 2 },
-            { q: "Aşağıdakilerden hangisi bir 'Acil Durum' değildir?", options: ["Deprem", "Yangın", "Makinenin rutin bakımı", "Kimyasal sızıntı"], ans: 2 },
-            { q: "Tehlikeli sınıftaki bir işyerinde acil durum planı kaç yılda bir yenilenir?", options: ["2", "4", "6", "10"], ans: 1 },
-            { q: "Az tehlikeli sınıfta temel isg eğitimi en az kaç saat olmalıdır?", options: ["8 saat", "12 saat", "16 saat", "24 saat"], ans: 0 },
-            { q: "Hangi işaret şekli 'Sarı Zemin' ile kullanılır?", options: ["Eşkenar Üçgen", "Daire", "Dikdörtgen", "Kare"], ans: 0 },
-            { q: "Göz koruyucu KKD'lerin temel işlevi nedir?", options: ["Sıcaklıktan korumak", "Uçuşan parçacıklara ve kimyasal sıçramalara karşı korumak", "Radyasyondan korumak", "Ses şiddetini azaltmak"], ans: 1 },
-            { q: "NACE Kodu kaç haneli bir sistemden oluşur?", options: ["4", "6", "8", "10"], ans: 1 },
-            { q: "Aşağıdaki durumlardan hangisi Domino Etkisi Kuramı'nın ilk taşıdır?", options: ["Kaza", "Kişisel Kusur", "Kalıtsal ve Sosyal Çevre", "Yaralanma"], ans: 2 },
-            { q: "Güvensiz durumların önlenmesi kimin sorumluluğundadır?", options: ["Sadece İş Güvenliği Uzmanı", "Sadece İşyeri Hekimi", "Öncelikli olarak İşveren", "Devlet"], ans: 2 },
-            { q: "Risk değerlendirmesi sürecinde tehlikenin kaynağında yok edilmesi stratejisine ne denir?", options: ["Eliminasyon", "İkame", "İzolasyon", "KKD"], ans: 0 },
-            { q: "Aşağıdakilerden hangisi toplu korunma uygulamasıdır?", options: ["Baret takmak", "Makine koruyucusu kullanmak", "Eldiven giymek", "Emniyet kemeri bağlamak"], ans: 1 },
-            { q: "İşyerinde meydana gelen ancak yaralanma veya zarara yol açmayan olaylara ne ad verilir?", options: ["İş Kazası", "Meslek Hastalığı", "Ramak Kala Olay", "Güvensiz Hareket"], ans: 2 },
-            { q: "5510 sayılı Kanun'a göre meslek hastalığı nedir?", options: ["İşverenin kötü davranması", "Sigortalının çalıştığı işin niteliğine göre tekrarlanan bir sebeple uğradığı geçici veya sürekli hastalık", "Doğuştan gelen rahatsızlık", "Evde geçirilen hastalık"], ans: 1 }
-        ];
+        const allQuestions = [{"q": "Senaryo: Bir işyerinde çalışanlara çalışma sistemi eskisinden tamamen farklı yeni bir makine alınmıştır. Bu durumda yapılması gereken EN DOĞRU İSG yaklaşımı hangisidir?", "options": ["Eski risk değerlendirmesi aynen kullanılmalıdır", "Yeni makine için riskler tekrar değerlendirilmeli ve revize edilmelidir", "Sadece makine arızalanırsa değerlendirme yapılmalıdır", "Sadece çalışan sayısı artarsa değerlendirme gerekir"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Yeni makine için riskler tekrar değerlendirilmeli ve revize edilmelidir.<br><br><strong>Neden?:</strong> Risk Değerlendirmesi Yönetmeliği'ne göre; işyerinde yeni bir teknoloji, makine veya ekipman kullanılmaya başlandığında (kısmi veya tamamen) risk değerlendirmesi mutlaka yenilenmelidir."}, {"q": "Senaryo: Bir kimyasal madde ambalajında tehlike sembolleri (WHMIS) bulunmasına rağmen, işveren tarafından çalışanlara bu maddenin nasıl kullanılacağı ve tehlikeleri anlatılmamıştır. Bu durumda kimyasal güvenlik yaklaşımının hangi ayağı eksiktir?", "options": ["Etiketleme", "Çalışan eğitimi ve bilgilendirme", "Depolama alanı tahsisi", "İş sözleşmesi"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Çalışan eğitimi ve bilgilendirme.<br><br><strong>Neden?:</strong> Kimyasal yönetim sistemlerinde (WHMIS/GHS) sadece kutunun üzerine tehlike etiketi yapıştırmak yeterli değildir. Etiketi okuyabilme, Güvenlik Bilgi Formunu (MSDS/GBF) anlama ve kimyasalla güvenli çalışma konularında çalışana mutlaka eğitim verilmelidir."}, {"q": "Sarı üçgen içinde siyah piktogram bulunan ve etrafı siyah çerçeveli olan bir İSG levhası genel olarak ne anlama gelir?", "options": ["Tehlikeye karşı uyarı verir (Uyarı İşareti)", "Yapılması zorunlu davranışı gösterir (Emredici)", "Acil çıkış yönünü gösterir", "Yangın ekipmanının yerini gösterir"], "ans": 0, "exp": "<strong>Doğru Cevap:</strong> Tehlikeye karşı uyarı verir (Uyarı İşareti).<br><br><strong>Neden?:</strong> Sarı zeminli üçgen levhalar her zaman 'Dikkat / Uyarı' anlamına gelir (Örn: Elektrik tehlikesi, toksik madde uyarısı, kaygan zemin)."}, {"q": "İş kazası ile Meslek hastalığı arasındaki en temel kavramsal fark aşağıdakilerden hangisidir?", "options": ["Meslek hastalığı her zaman daha ölümcüldür", "İş kazası sadece ofiste, meslek hastalığı sadece fabrikada olur", "İş kazası aniden gelişen (ani) bir olaydır; meslek hastalığı ise işin niteliği gereği tekrarlı maruziyetle zaman içinde oluşur", "Meslek hastalığı İSG kanunu kapsamında sayılmaz"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> İş kazası aniden gelişir, meslek hastalığı zamanla oluşur.<br><br><strong>Neden?:</strong> İş kazası planlanmayan, anlık olarak gerçekleşen ve o an zarar veren olaydır. Meslek hastalığı ise yıllar süren toz, gürültü veya kimyasal maruziyeti sonucu yavaş yavaş ortaya çıkan kalıcı bir rahatsızlıktır."}, {"q": "Bir hastane laboratuvarında çalışan kişinin hastaların kan numunelerini incelerken virüs ve bakteri gibi etkenlere maruz kalma ihtimali hangi risk grubuna girer?", "options": ["Kimyasal risk", "Ergonomik risk", "Biyolojik risk", "Fiziksel risk"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Biyolojik risk.<br><br><strong>Neden?:</strong> Bakteri, virüs, mantar veya parazit gibi canlı mikroorganizmaların insan sağlığına zarar verme ihtimali tamamen 'Biyolojik Risk Etmenleri' kapsamında değerlendirilir."}, {"q": "Bir işyerinde sürekli baskı, yöneticiler tarafından uygulanan mobbing ve dinlenme hakkı verilmeyen aşırı iş yükü nedeniyle çalışanların ruhsal olarak çöküntü yaşaması hangi risk etkenine örnektir?", "options": ["Fiziksel", "Kimyasal", "Psikososyal", "Biyolojik"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Psikososyal riskler.<br><br><strong>Neden?:</strong> İşyerindeki organizasyonel sorunlar, aşırı stres, tükenmişlik sendromu, taciz ve mobbing gibi zihinsel ve ruhsal sağlığı bozan tüm etmenler 'Psikososyal Risk Etmenleri'dir."}, {"q": "Acil durum planı hazırlanırken binanın dışında bir 'Toplanma Alanı' belirlenmesinin TEMEL amacı nedir?", "options": ["Çalışanların dışarıda sigara içmesini sağlamak", "Tahliye sonrası çalışanların güvenli bölgede sayımını ve kontrolünü sağlamak (Eksik var mı diye bakmak)", "Ambulansların park yerini belirlemek", "İşveren için maliyet hesaplamak"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Tahliye sonrası sayım ve kontrol sağlamak.<br><br><strong>Neden?:</strong> Toplanma alanının en kritik işlevi, bina boşaltıldıktan sonra içeride mahsur kalan birinin olup olmadığını anlamak için çalışanların tam sayımının yapılmasıdır."}, {"q": "Senaryo: Risk değerlendirme ekibi, tesisteki bir kimyasal tankın patlama ihtimalini 'Çok Düşük (Yılda bir)' ancak patlarsa şiddetini 'Çok Yüksek (Birden fazla ölüm)' olarak belirlemiştir. Bu risk için en doğru İSG yaklaşımı hangisidir?", "options": ["İhtimal düşük olduğu için bu risk tamamen yok sayılmalı ve puanı sıfır kabul edilmelidir", "Şiddet ölümcül olduğu için, olasılık ne kadar düşük olursa olsun risk ciddiye alınmalı ve acil kontrol tedbirleri planlanmalıdır", "Sadece işçilere dikkatli olmaları söylenmelidir", "Olasılık düşük olduğu için sadece uyarı levhası asmak yeterlidir"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Şiddet ölümcül olduğu için risk ciddiye alınmalı ve kontrol tedbirleri planlanmalıdır.<br><br><strong>Neden?:</strong> Risk = İhtimal x Şiddet formülünde, şiddet 'Ölüm/Kayıp' içeriyorsa o matriste o risk asla 'kabul edilebilir risk' sınıfına giremez. Şiddet yüksekse, olasılığın düşük olmasına güvenilerek risk göz ardı edilemez."}, {"q": "FMEA (Hata Türleri ve Etkileri Analizi) olarak bilinen risk değerlendirme metodolojisinin temel odak noktası aşağıdakilerden hangisidir?", "options": ["Sadece yangın risklerini hesaplamak", "İş sözleşmelerini denetlemek", "Sistemdeki potansiyel hataların türlerini, nedenlerini ve sistemin bütününe olan etkilerini analiz etmek", "Yalnızca çalışanların maaşlarını hesaplamak"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Sistemdeki potansiyel hataların türlerini ve etkilerini analiz etmek.<br><br><strong>Neden?:</strong> FMEA (Failure Mode and Effects Analysis), genellikle mühendislik ve imalat sistemlerinde bileşenlerin hangi şekilde bozulabileceğini ve bu bozulmanın sistemin bütününde ne tür felaketlere yol açacağını öngörmeye yarayan sayısal bir yöntemdir."}, {"q": "İş Kanununa göre, işçi ile işveren arasında kurulan 'İş Sözleşmesi'nin üç temel yasal unsuru aşağıdakilerden hangisinde doğru verilmiştir?", "options": ["İş görme, Ücret ödenmesi, Bağımlılık (İşverenin emir ve talimatlarına uyma)", "Tatil yapma, Prim alma, Sendikaya üye olma", "Risk alma, Tehlike bildirme, Tazminat kazanma", "Sigorta yatırma, Yemek sağlama, Yol parası verme"], "ans": 0, "exp": "<strong>Doğru Cevap:</strong> İş görme, Ücret, Bağımlılık.<br><br><strong>Neden?:</strong> Hukuki olarak bir iş sözleşmesinin varlığından söz edilebilmesi için kişinin bir 'iş görmesi', karşılığında 'ücret' alması ve işverenin emir ve talimatlarına 'bağımlı' olarak çalışması gerekir."}, {"q": "Hesaplama Sorusu: 'Çok Tehlikeli' sınıfta yer alan bir şantiyede toplam 28 çalışan bulunmaktadır. İlkyardım yönetmeliğine göre bu şantiyede en az kaç adet sertifikalı ilkyardımcı bulundurulması kanuni zorunluluktur?", "options": ["1", "2", "3", "4"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> 3 adet.<br><br><strong>Neden?:</strong> İlkyardım Yönetmeliğine göre Çok Tehlikeli sınıfta her '10 çalışana 1' ilkyardımcı zorunludur. 28 çalışan demek = (10) + (10) + (8) şeklindedir. Kalan küsurat için de 1 kişi atanması gerektiğinden toplamda 3 ilkyardımcı olmak zorundadır."}, {"q": "Senaryo: Bir fabrikada pres makinesinin çift el kumanda sistemi arızalanmıştır. Üretim müdürü siparişlerin yetişmesi için güvenlik donanımını devre dışı bırakarak makineyi tek el kumandayla çalıştırmanızı ister. İSG kültürüne göre ustabaşının EN DOĞRU tepkisi ne olmalıdır?", "options": ["Siparişi yetiştirip akşam makineyi tamir ettirmek", "Durumu tespit edip makine onarılana kadar 'çalışmaktan kaçınma' hakkını kullandırmak", "Sadece en tecrübeli işçiyi makinede çalıştırmak", "İşçilere ekstra dikkatli olmalarını söylemek"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Durumu tespit edip makine onarılana kadar 'çalışmaktan kaçınma' hakkını kullandırmak.<br><br><strong>Neden?:</strong> İSG Kanununa göre çalışanlar ciddi ve yakın bir tehlike ile karşılaştıklarında, gerekli tedbirler alınıncaya kadar 'çalışmaktan kaçınma hakkını' kullanabilirler."}, {"q": "Senaryo: Ayşe Hanım, işverenin tahsis ettiği servis aracıyla sabah işe giderken araç kaza yapar ve hafif yaralanır. İşe gidemeden evine döner. 5510 sayılı Sosyal Sigortalar Kanununa göre bu durumun yasal tanımı nedir?", "options": ["Trafik kazasıdır, iş kazası sayılmaz", "İşyerine henüz varmadığı için iş kazası sayılmaz", "İşverenin tahsis ettiği araçla (servis) olduğu için iş kazasıdır", "Mesai başlamadığı için adi kazadır"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> İşverenin tahsis ettiği araçla olduğu için iş kazasıdır.<br><br><strong>Neden?:</strong> 5510 Sayılı Kanunun 13. maddesine göre; sigortalıların işverence sağlanan bir taşıtla işin yapıldığı yere gidiş gelişi sırasında meydana gelen kazalar 'İş Kazası' sayılır."}, {"q": "Senaryo: Bir kimya tesisinde zehirli gaz sızıntısı riski belirlenmiştir. Uzmanlar; maske dağıtmayı (1), sistemi kapalı devreye almayı (2) ve kimyasalı zehirsiz olanla değiştirmeyi (3) tartışmaktadır. Risk kontrol hiyerarşisine göre EN ÖNCELİKLİ adım hangisidir?", "options": ["Maske dağıtmak (1)", "Kapalı sisteme almak (2)", "Kimyasalı zehirsiz olanla değiştirmek - İkame (3)", "Ortamı havalandırmak"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Kimyasalı zehirsiz olanla değiştirmek - İkame.<br><br><strong>Neden?:</strong> Risk kontrol hiyerarşisinde adımlar sırasıyla: 1-Eliminasyon, 2-İkame, 3-Mühendislik önlemleri, 4-İdari önlemler, 5-KKD'dir. KKD her zaman son çaredir."}, {"q": "Senaryo: İnşaatta çalışan bir işçi, kendisine verilen baret ve emniyet kemerini 'hareketlerimi kısıtlıyor' diyerek takmaz ve iskeleden düşerek yaralanır. İşveren 'Ben kemeri verdim, kendi takmadı' diyerek kendini savunur. Hukuki değerlendirme nasıldır?", "options": ["İşverenin eksikliği yoktur, suç işçidedir", "İşveren çalışanı zorla bağlamadığı için suçludur", "İşveren sadece malzeme sağlamakla değil, kullanımını denetlemek ve zorlamakla da yükümlüdür", "İşveren daha pahalı kemer almadığı için suçludur"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> İşveren kullanımını denetlemek ve zorlamakla yükümlüdür.<br><br><strong>Neden?:</strong> İşveren salt KKD'yi teslim ederek sorumluluktan kurtulamaz. İşçilerin bu donanımları kullanıp kullanmadığını denetlemek, uyarmak veya gerekirse işten uzaklaştırmak işverenin 'gözetim' yükümlülüğüdür."}, {"q": "Senaryo: Depoda yangın alarmı çalar. Panikleyen işçiler acil çıkış kapısına yönelir ancak kapının asma kilit ile kilitlendiği görülür. Yöneticinin savunması 'Gece hırsız girmesin diye kilitliyoruz' şeklindedir. İSG mevzuatına göre doğrusu nedir?", "options": ["Gece vardiyasında kilitli olması normaldir", "Acil çıkış kapıları kesinlikle kilitli tutulmamalı, içeriden desteksiz kolayca açılabilir olmalıdır", "Sadece vardiya amirinde anahtar olması yeterlidir", "İşçiler yedek anahtarın yerini bilmelidir"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Kapılar kesinlikle kilitli tutulmamalıdır.<br><br><strong>Neden?:</strong> Acil çıkış kapıları kaçış yönüne doğru (dışarı) açılmalı, döner veya sürgülü kapı olmamalı ve KESİNLİKLE kilitli tutulmamalıdır. Panik bar kullanılmalıdır."}, {"q": "Senaryo: İşyerinde gürültü ölçümü yapılmış ve değer 82 dB(A) çıkmıştır (En düşük eylem değeri 80, en yüksek 85 dB'dir). İşveren kulak koruyucuları masalara bırakmış ancak kullanımı işçinin inisiyatifine bırakmıştır. İşverenin bu tutumu nasıldır?", "options": ["Yanlıştır, 80 dB'yi geçtiği an kesinlikle zorunlu olmalıdır", "Doğrudur, 85 dB'yi aşmadığı sürece kullanım zorunlu tutulamaz ancak kulaklık hazır bulundurulmalıdır", "Yanlıştır, fabrikayı kapatmalıdır", "Doğrudur, kulaklık verilmesi bile gereksizdir"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Doğrudur, 85 dB'yi aşmadığı sürece zorunlu tutulamaz ancak hazır bulundurulmalıdır.<br><br><strong>Neden?:</strong> Gürültü yönetmeliğine göre; 80 dB(A) 'En düşük eylem değeri'dir (Kulaklık sağlanır, takılması tavsiye edilir). 85 dB(A) ise 'En yüksek eylem değeri'dir (Kullanımı ZORUNLUDUR)."}, {"q": "Senaryo: Bir inşaatta yüksekte çalışma yapılırken işçilere emniyet kemeri verilmiş ancak kemerin kancasını takacakları bir 'yaşam hattı' çekilmemiştir. Buna rağmen çalışma başlatılmıştır. Buradaki temel İSG mantık hatası nedir?", "options": ["Kemerin bel tipi olması gerekirdi", "Toplu koruma (yaşam hattı) sağlanmadan KKD'nin tek başına işlevsiz bırakılması", "İşçilerin kemeri beline sıkı bağlamaması", "Kemerlerin CE belgesiz olması"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Toplu koruma sağlanmadan KKD'nin işlevsiz bırakılması.<br><br><strong>Neden?:</strong> Paraşüt tipi emniyet kemeri tek başına işe yaramaz. Güvenli bir ankraj noktasına veya yaşam hattına bağlanması şarttır."}, {"q": "Senaryo: Mermer kesim atölyesinde kuru kesim yapıldığı için havada yoğun silika tozu uçuşmaktadır. İSG uzmanı, makinelere su fışkırtma sistemi (ıslak kesim) kurulmasını önerir. Bu öneri risk kontrolünde hangi adıma girer?", "options": ["Kişisel koruma", "İkame (Yerine koyma)", "Mühendislik kontrolü (Tehlikenin kaynağında kontrolü)", "İdari önlem"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Mühendislik kontrolü.<br><br><strong>Neden?:</strong> Toz oluşumunu engellemek için sulu kesim yapmak, tehlikeyi kaynağında bastırma yöntemidir. İzolasyon, havalandırma ve sulu sistemler 'Mühendislik Kontrolleri'dir."}, {"q": "Senaryo: Ahmet Bey, yere dökülen makine yağını görmüş ancak 'temizlikçinin işi' diyerek bildirmemiş ve temizlememiştir. Bir süre sonra arkadaşı yağa basıp düşmüş ve ayağını kırmıştır. Ahmet Bey'in durumu nedir?", "options": ["Ahmet Bey'in suçu yoktur", "Tehlikeyi gördüğü halde bildirmediği/önlem almadığı için 'çalışanın İSG yükümlülükleri' maddesini ihlal etmiştir", "Sadece temizlik personeli suçludur", "İşveren tamamen suçludur"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> 'Çalışanın İSG yükümlülükleri' maddesini ihlal etmiştir.<br><br><strong>Neden?:</strong> Çalışanlar; işyerindeki tehlikeli durumları derhal amirine veya temsilcisine BİLDİRMEKLE yükümlüdür. Göz yummak kanuni bir ihlaldir."}, {"q": "Senaryo: Bir banka şubesinde (Az tehlikeli sınıf, 25 çalışan) yangın ve tahliye için hiçbir destek elemanı atanmamıştır. Şube müdürü 'Burası tehlikeli değil' demektedir. Yönetmeliğe göre doğrusu nedir?", "options": ["Az tehlikeli olduğu için atanması gerekmez", "Sadece 1 adet ilkyardımcı yeterlidir", "Çalışan sayısı 50'yi geçmediği için en az 1 kişinin destek elemanı atanması zorunludur", "İtfaiye ile sözleşme yapılması yeterlidir"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Az tehlikeli sınıfta, her 50 çalışana kadar en az 1 destek elemanı atanmalıdır.<br><br><strong>Neden?:</strong> Acil Durumlar Yönetmeliğine göre: Az tehlikeli işyerlerinde her 50 çalışana 1, Tehlikelide her 40 çalışana 1, Çok Tehlikelide her 30 çalışana 1 destek elemanı görevlendirilmesi zorunludur."}, {"q": "İş sağlığı ve güvenliği işaretlerinde, 'Mavi' renkli daire şeklindeki levhalar ne anlama gelir?", "options": ["Yasaklama (Tehlike)", "Yangınla mücadele donanımı", "Zorunlu Eylem (Emredici)", "Acil çıkış ve İlk Yardım"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Zorunlu Eylem (Emredici).<br><br><strong>Neden?:</strong> Mavi zemin üzerine beyaz piktogramlı levhalar, yapılmasını zorunlu kıldıkları hareketleri belirtir (Örn: 'Baret takmak zorunludur')."}, {"q": "Heinrich Kaza Piramidi teorisine göre, meydana gelen her 1 ölümlü/ağır yaralanmalı iş kazasının tabanında kaç tane ramak kala (yaralanmasız, kıl payı) olay yatmaktadır?", "options": ["29", "50", "100", "300"], "ans": 3, "exp": "<strong>Doğru Cevap:</strong> 300.<br><br><strong>Neden?:</strong> H.W. Heinrich'in 1-29-300 kuralına göre; 1 büyük kazanın altında 29 hafif yaralanmalı kaza ve 300 adet ramak kala olay bulunur."}, {"q": "NACE kodu, İSG uygulamalarında işyerleri için neyi ifade eder?", "options": ["Toplam ciro miktarını", "Tehlike sınıfını ve faaliyet alanını", "SGK sicil numarasını", "Kuruluş yılını"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Tehlike sınıfını ve faaliyet alanını.<br><br><strong>Neden?:</strong> NACE, işletmelerin faaliyet kodudur. İşyerinin Az Tehlikeli, Tehlikeli veya Çok Tehlikeli sınıfta yer aldığını belirlemede temel dayanak olarak kullanılır."}, {"q": "İş kazalarının yaklaşık %88'i aşağıdakilerden hangisinden kaynaklanmaktadır?", "options": ["Doğal afetler (Deprem, sel vb.)", "Güvensiz durumlar (Makine arızası vb.)", "Güvensiz hareketler (İnsan faktörü/hatası)", "Yetersiz aydınlatma"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Güvensiz hareketler (İnsan faktörü).<br><br><strong>Neden?:</strong> İstatistiklere göre iş kazalarının %88'i çalışanların yaptığı güvensiz hareketlerden (kural ihlali, KKD takmama vb.) kaynaklanır."}, {"q": "Çok tehlikeli sınıfta yer alan bir maden işletmesinde risk değerlendirmesi normal şartlarda en geç kaç yılda bir yenilenmelidir?", "options": ["1", "2", "4", "6"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> 2 yılda bir.<br><br><strong>Neden?:</strong> Risk değerlendirmesinin yenilenme periyotları: Çok Tehlikeli sınıfta 2, Tehlikeli sınıfta 4, Az Tehlikeli sınıfta 6 yılda bir yenilenir."}, {"q": "Acil durum planı tatbikatları normal işyerlerinde en az ne sıklıkla yapılmalıdır?", "options": ["Yılda 1 kez", "2 yılda 1 kez", "6 ayda 1 kez", "Sadece işe girerken"], "ans": 0, "exp": "<strong>Doğru Cevap:</strong> Yılda 1 kez.<br><br><strong>Neden?:</strong> Acil Durumlar Hakkında Yönetmeliğe göre, tatbikatlar normal işyerlerinde yılda en az 1 kez, Madenlerde ise 6 ayda 1 kez zorunludur."}, {"q": "Tehlikeli sınıfta yer alan bir fabrikada ilkyardımcı bulundurma zorunluluğu çalışan sayısına göre nasıldır?", "options": ["Her 10 kişide 1", "Her 15 kişide 1", "Her 20 kişide 1", "Her 50 kişide 1"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> Her 15 kişide 1 ilkyardımcı.<br><br><strong>Neden?:</strong> İlkyardım Yönetmeliğine göre kural: Çok Tehlikeli: 10 kişiye 1, Tehlikeli: 15 kişiye 1, Az Tehlikeli: 20 kişiye 1 ilkyardımcıdır."}, {"q": "İş kazası meydana geldiğinde işverenin bu kazayı Sosyal Güvenlik Kurumuna (SGK) bildirim süresi ne kadardır?", "options": ["Aynı gün içinde", "24 saat içinde", "Kazadan sonraki 3 iş günü içinde", "1 hafta içinde"], "ans": 2, "exp": "<strong>Doğru Cevap:</strong> Kazadan sonraki 3 iş günü içinde.<br><br><strong>Neden?:</strong> 5510 sayılı Kanuna göre işveren, iş kazasını kazadan sonraki 3 iş günü içinde SGK'ya bildirmekle yükümlüdür."}, {"q": "Patlayıcı ortam oluşma ihtimali olan yerlerde 'Bölge 0' (Zone 0) tam olarak ne anlama gelir?", "options": ["Patlayıcı ortamın hiçbir zaman oluşmayacağı güvenli bölge", "Normal çalışmada patlayıcı ortamın nadiren oluştuğu bölge", "Toz patlaması riskinin olduğu geçici bölge", "Patlayıcı gaz veya buharın hava ile karışımının sürekli veya çok uzun süreli bulunduğu bölge"], "ans": 3, "exp": "<strong>Doğru Cevap:</strong> Sürekli veya çok uzun süreli bulunduğu bölge.<br><br><strong>Neden?:</strong> Patlayıcı Gaz ortamlarında Bölge 0: Sürekli tehlike, Bölge 1: Ara sıra oluşan tehlike, Bölge 2: Sadece anomali durumunda nadiren oluşan tehlikedir."}, {"q": "Tehlikeli sınıfta yer alan işyerlerinde sağlık taramaları (periyodik muayeneler) en geç ne sıklıkla tekrarlanmalıdır?", "options": ["1 yılda bir", "3 yılda bir", "5 yılda bir", "İşe girerken bir kez"], "ans": 1, "exp": "<strong>Doğru Cevap:</strong> 3 yılda bir.<br><br><strong>Neden?:</strong> Çalışanların periyodik sağlık muayeneleri; Çok Tehlikeli sınıfta yılda 1, Tehlikeli sınıfta 3 yılda 1, Az Tehlikeli sınıfta ise 5 yılda 1 defa tekrarlanır."}];
 
-        // Let's procedurally generate the remaining 60 questions with variations of important topics to reach exactly 100
-        const topics = [
-            {t: "KKD", opts: ["Uygun olmalı", "CE işareti", "Kendisi risk yaratmamalı", "Son çare"]},
-            {t: "İkame", opts: ["Değiştirme", "Az tehlikeli", "Zehirli yerine su bazlı", "Asbest yerine cam yünü"]},
-            {t: "Acil Durum", opts: ["Yangın", "Deprem", "Sızıntı", "Önleyici eylem"]},
-            {t: "Renkler", opts: ["Kırmızı-Yasak", "Sarı-Uyarı", "Mavi-Emredici", "Yeşil-Güvenli"]},
-            {t: "İş Kazası", opts: ["İşyerinde", "Görevli", "Emzirme izni", "Servis aracı"]}
-        ];
-
-        for (let i = 41; i <= 100; i++) {
-            let topicIndex = i % topics.length;
-            let topic = topics[topicIndex];
-            
-            // Randomize a generic question
-            allQuestions.push({
-                q: `[Deneme Sorusu ${i}] İSG sınavında '${topic.t}' konusu ile ilgili en önemli husus aşağıdakilerden hangisidir?`,
-                options: [
-                    topic.opts[0],
-                    topic.opts[1],
-                    topic.opts[2],
-                    topic.opts[3]
-                ],
-                ans: Math.floor(Math.random() * 4)
-            });
-        }
-
-        // We now have 100 questions!
         let currentQuestions = [];
         let currentIndex = 0;
         let score = 0;
         let wrongCount = 0;
 
-        // Shuffle function
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
             while (currentIndex != 0) {
@@ -339,8 +169,7 @@
         }
 
         function startQuiz() {
-            // Select exactly 100 questions (or however many we have if less)
-            currentQuestions = shuffle([...allQuestions]).slice(0, 100);
+            currentQuestions = shuffle([...allQuestions]);
             currentIndex = 0;
             score = 0;
             wrongCount = 0;
@@ -359,16 +188,19 @@
 
         function loadQuestion() {
             const nextBtn = document.getElementById('next-btn');
+            const expBox = document.getElementById('explanation-box');
+            
             nextBtn.style.display = 'none';
+            expBox.style.display = 'none';
+            expBox.innerHTML = '';
 
             const qData = currentQuestions[currentIndex];
             const qEl = document.getElementById('question-text');
             const optsGrid = document.getElementById('options-grid');
 
-            // Reset animations
             qEl.classList.remove('fade-in');
             optsGrid.classList.remove('fade-in');
-            void qEl.offsetWidth; // trigger reflow
+            void qEl.offsetWidth; 
             qEl.classList.add('fade-in');
             optsGrid.classList.add('fade-in');
 
@@ -379,23 +211,29 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                btn.onclick = () => selectOption(index, btn, qData.ans);
+                btn.onclick = () => selectOption(index, btn, qData);
                 optsGrid.appendChild(btn);
             });
         }
 
-        function selectOption(selectedIndex, btnElement, correctIndex) {
+        function selectOption(selectedIndex, btnElement, qData) {
+            const correctIndex = qData.ans;
             const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(btn => btn.disabled = true); // Disable all
+            
+            buttons.forEach(btn => btn.disabled = true); 
 
             if (selectedIndex === correctIndex) {
                 btnElement.classList.add('correct');
                 score++;
             } else {
                 btnElement.classList.add('wrong');
-                buttons[correctIndex].classList.add('correct'); // Show correct one
+                buttons[correctIndex].classList.add('correct'); 
                 wrongCount++;
             }
+
+            const expBox = document.getElementById('explanation-box');
+            expBox.innerHTML = qData.exp;
+            expBox.style.display = 'block';
 
             document.getElementById('next-btn').style.display = 'block';
             updateStats();
@@ -414,10 +252,9 @@
         function showResults() {
             document.getElementById('question-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'block';
-            document.getElementById('final-score').innerText = `${score}/100`;
+            document.getElementById('final-score').innerText = `${score}/${currentQuestions.length}`;
         }
 
-        // Initialize
         startQuiz();
     </script>
 </body>
