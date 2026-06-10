@@ -90,15 +90,31 @@
         .question-text { font-size: 18px; line-height: 1.6; margin-bottom: 25px; font-weight: 600; }
         .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
         .option-btn {
-            background: var(--option-bg); border: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-main); padding: 15px 20px; border-radius: 12px;
-            font-size: 15px; cursor: pointer; text-align: left;
-            transition: all 0.2s ease; font-family: inherit; line-height: 1.4;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: #e2e8f0; padding: 16px 20px; text-align: left; border-radius: 14px;
+            cursor: pointer; font-size: 16px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(10px);
         }
-        .option-btn:hover:not(:disabled) { background: var(--option-hover); transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
-        .option-btn.correct { background: rgba(16, 185, 129, 0.15); border-color: var(--success); color: var(--success); }
-        .option-btn.wrong { background: rgba(239, 68, 68, 0.15); border-color: var(--danger); color: var(--danger); }
-        .option-btn:disabled { cursor: default; }
+        .option-btn:hover:not(:disabled) { 
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        .option-btn.correct { 
+            background: linear-gradient(145deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+            border-color: #10b981; color: #34d399; 
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3) inset, 0 5px 15px rgba(16, 185, 129, 0.2);
+        }
+        .option-btn.wrong { 
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.05));
+            border-color: #ef4444; color: #f87171; 
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3) inset, 0 5px 15px rgba(239, 68, 68, 0.2);
+        }
+        .option-btn:disabled { cursor: default; opacity: 0.8; transform: none; box-shadow: none; }
         
         .explanation-box {
             display: none; background: var(--exp-bg); border-left: 4px solid var(--primary);
@@ -110,12 +126,36 @@
         .explanation-box strong { color: #cbd5e1; }
         
         .controls { display: flex; justify-content: flex-end; }
-        .next-btn {
-            background: var(--primary); color: white; border: none;
-            padding: 14px 28px; border-radius: 12px; font-size: 15px;
-            font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: none;
+        
+        .main-btn, .next-btn {
+            position: relative; overflow: hidden; z-index: 1;
+            display: block; width: 100%; padding: 18px; margin-bottom: 15px; margin-top: 20px;
+            border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); border: none; color: white;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-        .next-btn:hover { background: var(--primary-hover); box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4); }
+        .main-btn::after, .next-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease; z-index: -1;
+        }
+        .main-btn:hover::after, .next-btn:hover::after { left: 100%; }
+
+        .main-btn.primary, .next-btn { 
+            background: linear-gradient(135deg, #3b82f6, #2563eb); 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .main-btn.primary:hover, .next-btn:hover { 
+            transform: translateY(-4px); box-shadow: 0 12px 25px rgba(59, 130, 246, 0.5); 
+        }
+        
+        .main-btn.secondary { 
+            background: linear-gradient(135deg, #10b981, #059669); 
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        .main-btn.secondary:hover { 
+            transform: translateY(-4px); box-shadow: 0 12px 25px rgba(16, 185, 129, 0.5); 
+        }
         
         .result-screen { display: none; text-align: center; }
         .score-circle {
@@ -167,13 +207,32 @@
         }
         .wasted-overlay.show h1 { transform: scale(1); }
 
+        /* Menu & Topics CSS */
+        .start-screen { text-align: center; padding: 20px 0; }
+        
+        .topics-screen { display: none; }
+        .topics-content {
+            max-height: 60vh; overflow-y: auto; padding-right: 15px;
+            font-size: 15px; line-height: 1.7; color: #cbd5e1;
+            text-align: left;
+        }
+        .topics-content h3 { color: #f8fafc; margin-top: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+        .topics-content h3:first-child { margin-top: 0; }
+        .topics-content ul { padding-left: 20px; }
+        .topics-content li { margin-bottom: 8px; }
+        .topics-content strong { color: #fb923c; } 
+        
+        .topics-content::-webkit-scrollbar { width: 8px; }
+        .topics-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+        .topics-content::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
         @media (max-width: 600px) {
             .container { padding: 20px; border-radius: 16px; }
             .title { font-size: 22px; }
             .question-text { font-size: 16px; }
             .option-btn { padding: 12px 16px; font-size: 14px; }
             .explanation-box { font-size: 14px; padding: 12px 15px; }
-            .next-btn { width: 100%; text-align: center; padding: 15px; }
+            .main-btn, .next-btn { padding: 15px; font-size: 14px; }
             .score-circle { width: 120px; height: 120px; font-size: 28px; }
             .wasted-overlay h1 { font-size: 14vw; letter-spacing: 4px; }
         }
@@ -191,14 +250,75 @@
             <h1 class="title">İSG Sınavı: Açıklamalı & Senaryolu</h1>
         </div>
         
-        <div class="stats">
+        <div id="start-screen" class="start-screen fade-in">
+            <h2 style="font-size: 20px; margin-bottom: 30px; color: var(--text-muted); font-weight: 400;">MDB 106 Sınavına Hoş Geldiniz</h2>
+            <button class="main-btn primary" onclick="startQuiz()">📝 Sınava Başla</button>
+            <button class="main-btn secondary" onclick="showTopics()">💡 Önemli Konular & İpuçları</button>
+        </div>
+
+        <div id="topics-screen" class="topics-screen fade-in">
+            <h2 class="title" style="font-size: 22px; text-align: left; margin-bottom: 20px;">Önemli Konular & İpuçları</h2>
+            <div class="topics-content">
+                <h3>1. KKD (Kişisel Koruyucu Donanım)</h3>
+                <ul>
+                    <li><strong>Nedir?</strong> Çalışanı, yürütülen işten kaynaklanan risklere karşı koruyan donanımdır.</li>
+                    <li><strong>Nasıl Olmalı?</strong> Kendisi ek bir risk oluşturmamalı, çalışma koşullarına ve çalışana tam uymalı, CE işareti taşımalıdır.</li>
+                </ul>
+
+                <h3>2. Güvenlik ve Sağlık İşaretleri</h3>
+                <ul>
+                    <li><strong>Kırmızı (Yasak/Yangın):</strong> Daire (Yasak), Kare/Dikdörtgen (Yangın). Beyaz zemin, siyah piktogram, kırmızı çerçeve ve <strong>diyagonal çizgi</strong>.</li>
+                    <li><strong>Sarı (Uyarı):</strong> Eşkenar Üçgen. Sarı zemin, siyah piktogram, siyah çerçeve.</li>
+                    <li><strong>Mavi (Emredici):</strong> Daire. Mavi zemin, beyaz piktogram.</li>
+                    <li><strong>Yeşil (Acil Çıkış / İlk Yardım):</strong> Kare/Dikdörtgen. Yeşil zemin, beyaz piktogram.</li>
+                </ul>
+
+                <h3>3. İş Kazası ve Meslek Hastalığı</h3>
+                <ul>
+                    <li><strong>İş Kazası:</strong> Aniden gelişen bir olaydır. Örn: Kalp krizi geçirmek, işverenin servisiyle kaza yapmak, iş için başka şehirdeyken kaza geçirmek.</li>
+                    <li>Kendi aracınızla işe gelirken kaza yapmak iş kazası <strong>değildir.</strong></li>
+                    <li><strong>Meslek Hastalığı:</strong> Tekrarlı maruziyet sonucu zamanla oluşan rahatsızlıklardır. (Örn: Kurşun zehirlenmesi, gürültüye bağlı sağırlık)</li>
+                </ul>
+
+                <h3>4. Heinrich Kaza Piramidi ve Domino Etkisi</h3>
+                <ul>
+                    <li><strong>1-29-300 Kuralı:</strong> Meydana gelen her 1 Ağır kazaya karşılık, 29 Hafif kaza, 300 Ramak kala olay vardır.</li>
+                    <li><strong>Domino Etkisi Kuramı:</strong> Kazaları önlemek için müdahale edilecek TEK taş "Güvensiz Hareket ve Güvensiz Şartlar"dır.</li>
+                </ul>
+
+                <h3>5. Risk Yönetimi, İkame ve FMEA</h3>
+                <ul>
+                    <li><strong>İkame Nedir?</strong> Tehlikeli olan bir maddeyi/makineyi daha az tehlikeli olanla değiştirmektir (Örn: Zehirli çözücü yerine su bazlı kullanmak).</li>
+                    <li><strong>FMEA:</strong> Risk değerlendirmesinde "Olasılık x Şiddet x Saptanabilirlik (Fark edilebilirlik)" kullanılır.</li>
+                    <li>Ölümcül sonuç doğuran riskler, olasılığı çok düşük olsa bile her zaman en yüksek önceliğe sahiptir.</li>
+                </ul>
+
+                <h3>6. NACE Kodu ve Bağımlılık</h3>
+                <ul>
+                    <li><strong>NACE Kodu:</strong> İşyerinin faaliyet alanını ve tehlike sınıfını belirler.</li>
+                    <li><strong>İş Sözleşmesi:</strong> Temel unsurları; İş görme, Ücret ve Bağımlılıktır (İşverenin emir ve talimatı altında çalışmak).</li>
+                </ul>
+
+                <h3>7. Ezberlenmesi Gereken Önemli Süreler</h3>
+                <ul>
+                    <li><strong>Risk Değerlendirmesi ve Acil Durum Planı:</strong> Çok Tehlikeli: 2 Yıl | Tehlikeli: 4 Yıl | Az Tehlikeli: 6 Yıl</li>
+                    <li><strong>Temel İSG Eğitimleri:</strong> Çok Tehlikeli: Yılda 1 Kez (16 Saat) | Tehlikeli: 2 Yılda 1 Kez (12 Saat) | Az Tehlikeli: 3 Yılda 1 Kez (8 Saat)</li>
+                    <li><strong>İş Kazası Bildirim Süresi:</strong> Kazadan sonraki 3 iş günü içinde SGK'ya bildirilmelidir.</li>
+                    <li><strong>Gürültü:</strong> En yüksek maruziyet eylem değeri 85 dB(A)'dır ve kulaklık takılması <strong>zorunludur.</strong></li>
+                    <li><strong>İlkyardımcı Sayısı:</strong> Çok tehlikelide 10 kişide 1, Tehlikelide 15 kişide 1, Az tehlikelide 20 kişide 1 ilkyardımcı olmalıdır.</li>
+                </ul>
+            </div>
+            <button class="main-btn secondary" style="margin-top:20px;" onclick="goHome()">🏠 Ana Menüye Dön</button>
+        </div>
+        
+        <div class="stats" style="display: none;">
             <!-- Dinamik olarak JS tarafından ezilecek olan bekleme mesajı -->
             <span id="question-counter">Soru Sayısı Hesaplanıyor...</span>
             <span id="streak-display" class="streak-text">🔥 Seri: 0</span>
             <span id="score-display">Doğru: 0 | Yanlış: 0</span>
         </div>
 
-        <div id="question-screen">
+        <div id="question-screen" style="display: none;">
             <div class="question-text fade-in" id="question-text">Sistem Yükleniyor...</div>
             <div class="options-grid fade-in" id="options-grid"></div>
             
@@ -209,13 +329,14 @@
             </div>
         </div>
 
-        <div id="result-screen" class="result-screen">
+        <div id="result-screen" class="result-screen" style="display: none;">
             <h2 style="font-size: 26px; margin-bottom: 20px;">Sınav Tamamlandı!</h2>
             <div class="score-circle" id="final-score">0/0</div>
             <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.6;">
                 Tebrikler! MDB 106 Denemesi ve Açıklamalı İSG sorularını tamamladınız.
             </p>
-            <button class="next-btn" style="display:inline-block;" onclick="startQuiz()">Yeniden Başla</button>
+            <button class="next-btn" style="display:inline-block; margin-bottom: 10px; width: 100%;" onclick="startQuiz()">🔄 Yeniden Başla</button>
+            <button class="main-btn secondary" style="width: 100%; margin-top: 0;" onclick="goHome()">🏠 Ana Menüye Dön</button>
         </div>
     </div>
 
@@ -239,7 +360,31 @@
             return array;
         }
 
+        function hideOverlays() {
+            if (overlayTimeout) clearTimeout(overlayTimeout);
+            const flashOverlay = document.getElementById('flash-overlay');
+            const textOverlay = document.getElementById('wasted-overlay');
+            if (flashOverlay) flashOverlay.className = 'flash-overlay';
+            if (textOverlay) textOverlay.classList.remove('show');
+        }
+
+        function goHome() {
+            hideOverlays();
+            document.getElementById('question-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'none';
+            document.getElementById('topics-screen').style.display = 'none';
+            document.querySelector('.stats').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'block';
+        }
+
+        function showTopics() {
+            hideOverlays();
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('topics-screen').style.display = 'block';
+        }
+
         function startQuiz() {
+            hideOverlays();
             currentQuestions = shuffle([...allQuestions]);
             currentIndex = 0;
             score = 0;
@@ -247,7 +392,10 @@
             streak = 0;
             updateContainerGlow();
             
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('topics-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'none';
+            document.querySelector('.stats').style.display = 'flex';
             document.getElementById('question-screen').style.display = 'block';
             
             updateStats();
@@ -381,7 +529,7 @@
             document.getElementById('final-score').innerText = `${score}/${currentQuestions.length}`;
         }
 
-        startQuiz();
+        goHome();
     </script>
 </body>
 </html>
