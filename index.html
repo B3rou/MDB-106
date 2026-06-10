@@ -254,6 +254,7 @@
             <h2 style="font-size: 20px; margin-bottom: 30px; color: var(--text-muted); font-weight: 400;">MDB 106 Sınavına Hoş Geldiniz</h2>
             <button class="main-btn primary" onclick="startQuiz()">📝 Sınava Başla</button>
             <button class="main-btn secondary" onclick="showTopics()">💡 Önemli Konular & İpuçları</button>
+            <button class="main-btn primary" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);" onclick="showResourcesList()">📚 Detaylı Konu Özetleri</button>
         </div>
 
         <div id="topics-screen" class="topics-screen fade-in">
@@ -311,6 +312,24 @@
             <button class="main-btn secondary" style="margin-top:20px;" onclick="goHome()">🏠 Ana Menüye Dön</button>
         </div>
         
+        
+        <div id="resources-list-screen" class="topics-screen fade-in">
+            <h2 class="title" style="font-size: 22px; text-align: left; margin-bottom: 20px;">Daha Detaylı Özetler (Kaynaklar)</h2>
+            <div class="topics-content" id="resources-list-container">
+                <!-- JS populated -->
+            </div>
+            <button class="main-btn secondary" style="margin-top:20px;" onclick="goHome()">🏠 Ana Menüye Dön</button>
+        </div>
+
+        <div id="resource-detail-screen" class="topics-screen fade-in">
+            <h2 class="title" id="resource-detail-title" style="font-size: 20px; text-align: left; margin-bottom: 10px; color: #fb923c;">Konu Başlığı</h2>
+            <div class="topics-content" id="resource-detail-content" style="max-height: 50vh;">
+                <!-- JS populated -->
+            </div>
+            <button class="main-btn primary" style="margin-top:20px; background: linear-gradient(135deg, #64748b, #475569); box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);" onclick="showResourcesList()">🔙 Konu Listesine Dön</button>
+            <button class="main-btn secondary" style="margin-top:10px;" onclick="goHome()">🏠 Ana Menüye Dön</button>
+        </div>
+
         <div class="stats" style="display: none;">
             <!-- Dinamik olarak JS tarafından ezilecek olan bekleme mesajı -->
             <span id="question-counter">Soru Sayısı Hesaplanıyor...</span>
@@ -350,6 +369,47 @@
         let streak = 0;
         let overlayTimeout = null;
 
+        const resourcesData = [{"id": "konu-1", "title": "Konu 1: İSG Temel Kavramlar & Hukuki Boyut", "content": "\n            <div style=\"background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 4px solid #3b82f6; border-radius: 8px; margin-bottom: 20px;\">\n                <strong>📚 Konunun Özeti:</strong> İş Sağlığı ve Güvenliğinin (İSG) amacı sadece çalışanı değil; üretimi ve işletmeyi de güvence altına almaktır. Türkiye'de yürürlükte olan 6331 Sayılı İSG Kanunu, kaza olduktan sonra yara sarmayı değil (Reaktif), kaza olmadan önce tehlikeyi öngörmeyi (Proaktif) hedefler. İşveren, riskleri değerlendirmek ve eğitimleri vermekle yükümlüdür.\n            </div>\n            \n            <h3>🎯 Sınav İpuçları (Ders Notu 1 / Sayfa 17-23 & 29)</h3>\n            <ul>\n                <li><strong>Kapsam:</strong> 6331 sayılı kanun; çırak ve stajyerler de dahil kamudaki ve özeldeki <strong>tüm çalışanları</strong> kapsar.</li>\n                <li><strong>Kapsam Dışı Olanlar:</strong> TSK, Emniyet teşkilatı, afet müdahale ekipleri, ev hizmetleri (gündelikçiler) ve kendi nam ve hesabına tek başına çalışanlar (yanında işçi çalıştırmayan esnaf) kanun kapsamı dışındadır.</li>\n            </ul>\n        "}, {"id": "konu-4-5", "title": "Konu 4/5: Güvenlik İşaretleri & KKD", "content": "\n            <div style=\"background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 4px solid #3b82f6; border-radius: 8px; margin-bottom: 20px;\">\n                <strong>📚 Konunun Özeti:</strong> İşaret levhaları, çalışanları uyararak doğru davranışa yönlendirir. Kişisel Koruyucu Donanım (KKD) ise; riskin kaynağında yok edilemediği ve toplu koruma önlemlerinin yetersiz kaldığı durumlarda <strong>en son çare</strong> olarak çalışana giydirilen/takılan ekipmanlardır.\n            </div>\n\n            <h3>🎯 Sınav İpuçları</h3>\n            <ul>\n                <li><strong>KKD Şartları:</strong> Mutlaka <strong>CE</strong> işareti taşımalıdır, çalışana tam uymalıdır ve <em>kendisi ekstra bir risk yaratmamalıdır.</em></li>\n                <li><strong>Kırmızı Renk:</strong> Yasak ve Yangın. Yasak levhaları dairedir ve içlerinde <strong>çapraz diyagonal çizgi</strong> bulunur.</li>\n                <li><strong>Sarı Renk:</strong> Uyarı belirtir. Şekli <strong>Eşkenar Üçgen</strong>'dir.</li>\n                <li><strong>Mavi Renk:</strong> Emredicidir (Baret tak vb.). Şekli Daire'dir.</li>\n                <li><strong>Yeşil Renk:</strong> Acil Çıkış, İlk yardım ve güvenli durum belirtir. Şekli Kare/Dikdörtgen'dir.</li>\n            </ul>\n        "}, {"id": "konu-6-7", "title": "Konu 6/7: İş Kazaları & Kaza Teorileri", "content": "\n            <div style=\"background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 4px solid #3b82f6; border-radius: 8px; margin-bottom: 20px;\">\n                <strong>📚 Konunun Özeti:</strong> İş kazası, çalışanın aniden bedenen veya ruhen zarara uğradığı olaylardır. (Zamanla oluşanlar Meslek Hastalığıdır). Kazalar asla tesadüf değildir; biriken ihmallerin ve güvensiz hareketlerin patlama noktasıdır.\n            </div>\n\n            <h3>🎯 Sınav İpuçları (Aslıhan Hoca Vurguları)</h3>\n            <ul>\n                <li><strong>5510 Sayılı Kanun Kapsamı:</strong> İşyerinde kalp krizi geçirmek, işverenin tahsis ettiği servisle veya iş için görevli olarak dışarıdayken kaza geçirmek iş kazasıdır. Ancak <strong>şahsi aracıyla işe geliş-gidiş iş kazası sayılmaz.</strong></li>\n                <li><strong>Heinrich Kaza Piramidi:</strong> 1 Ağır kazanın temelinde; 29 hafif kaza ve 300 yaralanmasız (ramak kala) olay yatar.</li>\n                <li><strong>Domino Etkisi Kuramı:</strong> Kazalar dizili dominolar gibidir. Kazayı önlemek için müdahale edilecek TEK taş <strong>3. Taş olan Güvensiz Şartlar ve Güvensiz Hareketler</strong> taşıdır. Doğaya veya insana müdahale edilemez, sadece ortama ve düzene müdahale edilir.</li>\n            </ul>\n        "}, {"id": "konu-8", "title": "Konu 8: Acil Durum Planları", "content": "\n            <div style=\"background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 4px solid #3b82f6; border-radius: 8px; margin-bottom: 20px;\">\n                <strong>📚 Konunun Özeti:</strong> Yangın, patlama, deprem, sel, kimyasal sızıntı gibi durumlarda kriz anındaki kaosu engellemek için önceden hazırlanan yazılı proaktif senaryolardır. Bu planlar; kurtarma, söndürme ve ilkyardım ekiplerinin kimler olduğunu ve acil toplanma alanlarını netleştirir.\n            </div>\n\n            <h3>🎯 Sınav İpuçları</h3>\n            <ul>\n                <li>Acil durum planları sadece kaza olduktan sonrasını değil; önleyici, sınırlandırıcı ve müdahale edici eylemlerin tümünü kapsar.</li>\n                <li><strong>Plan Yenilenme Süreleri:</strong> Mutlaka ezberlenmeli! \n                <br>Çok Tehlikeli sınıfta: <strong>2 yılda bir</strong>\n                <br>Tehlikeli sınıfta: <strong>4 yılda bir</strong>\n                <br>Az Tehlikeli sınıfta: <strong>6 yılda bir</strong> yenilenir.</li>\n            </ul>\n        "}, {"id": "konu-9", "title": "Konu 9: Risk Yönetimi & İkame", "content": "\n            <div style=\"background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 4px solid #3b82f6; border-radius: 8px; margin-bottom: 20px;\">\n                <strong>📚 Konunun Özeti:</strong> Tehlike zarar verme potansiyelidir (Örn: Islak zemin), Risk ise bunun gerçekleşme ihtimalidir (Örn: Kayıp düşmek). Risk yönetimi bu ihtimalleri kabul edilebilir seviyeye çekme işidir. NACE kodu ise Avrupa standartlarında işyerinin ekonomik faaliyetini ve dolayısıyla 'Tehlike Sınıfını' belirleyen kodlama sistemidir.\n            </div>\n\n            <h3>🎯 Sınav İpuçları (Alpaslan Hoca Vurguları)</h3>\n            <ul>\n                <li><strong>İkame (Substitüsyon) Nedir?:</strong> Hiyerarşide tehlikeyi \"kaynağında yok etme\" adımından sonraki en iyi 2. adımdır. Tehlikeli olan bir şeyi, tehlikesiz veya <strong>daha az tehlikeli</strong> olanla değiştirmek demektir.</li>\n                <li><em>Örnek:</em> Zehirli asbest yerine cam yünü kullanmak, solvent bazlı boya yerine su bazlı boya kullanmak, gürültülü makineyi sessiziyle değiştirmek birer ikamedir.</li>\n                <li>Ders Notu Sayfa 147-149'daki koruma hiyerarşisi sırası (Önce kaynağında önle -> Sonra ortama müdahale et -> En son KKD ver) sadece ezberlenmemeli, hayatın içinden mantığıyla anlaşılmalıdır.</li>\n            </ul>\n        "}, {"id": "konu-11", "title": "Konu 11: İSG Genel Kültür", "content": "\n            <div style=\"background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 4px solid #3b82f6; border-radius: 8px; margin-bottom: 20px;\">\n                <strong>📚 Konunun Özeti:</strong> İSG, işyerindeki sadece 1 kişinin (uzmanın) görevi değil, şirketteki stajyerden CEO'ya kadar herkesin katılımıyla oluşan bir 'Güvenlik Kültürü' meselesidir.\n            </div>\n\n            <h3>🎯 Sınav İpuçları</h3>\n            <ul>\n                <li><strong>Bağımlılık Unsuru:</strong> Bir çalışanın hukuken 'işçi' sayılabilmesi ve İş Sözleşmesi'ne tabi olması için en kritik unsur <strong>Bağımlılıktır</strong>. Yani işçinin, işverenin organizasyonu içinde yer alarak onun emir, talimat ve hiyerarşisi altında mesaisini harcaması esastır. Taşeron veya bağımsız danışmanlıklarda bu katı hiyerarşi yoktur.</li>\n            </ul>\n        "}];
+
+        function renderResourcesList() {
+            const listContainer = document.getElementById('resources-list-container');
+            listContainer.innerHTML = '';
+            resourcesData.forEach(res => {
+                const btn = document.createElement('button');
+                btn.className = 'main-btn';
+                btn.style.background = 'linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))';
+                btn.style.border = '1px solid rgba(255,255,255,0.1)';
+                btn.style.marginBottom = '10px';
+                btn.style.padding = '15px';
+                btn.style.textAlign = 'left';
+                btn.style.textTransform = 'none';
+                btn.style.fontSize = '15px';
+                btn.innerText = '📖 ' + res.title;
+                btn.onclick = () => showResourceDetail(res.id);
+                listContainer.appendChild(btn);
+            });
+        }
+
+        function showResourcesList() {
+            hideOverlays();
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('topics-screen').style.display = 'none';
+            document.getElementById('resource-detail-screen').style.display = 'none';
+            document.getElementById('resources-list-screen').style.display = 'block';
+            renderResourcesList();
+        }
+
+        function showResourceDetail(id) {
+            const res = resourcesData.find(r => r.id === id);
+            if (!res) return;
+            document.getElementById('resource-detail-title').innerText = res.title;
+            document.getElementById('resource-detail-content').innerHTML = res.content;
+            
+            document.getElementById('resources-list-screen').style.display = 'none';
+            document.getElementById('resource-detail-screen').style.display = 'block';
+        }
+
+
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
             while (currentIndex != 0) {
@@ -373,6 +433,8 @@
             document.getElementById('question-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'none';
             document.getElementById('topics-screen').style.display = 'none';
+            document.getElementById('resources-list-screen').style.display = 'none';
+            document.getElementById('resource-detail-screen').style.display = 'none';
             document.querySelector('.stats').style.display = 'none';
             document.getElementById('start-screen').style.display = 'block';
         }
@@ -380,6 +442,8 @@
         function showTopics() {
             hideOverlays();
             document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('resources-list-screen').style.display = 'none';
+            document.getElementById('resource-detail-screen').style.display = 'none';
             document.getElementById('topics-screen').style.display = 'block';
         }
 
@@ -394,6 +458,8 @@
             
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('topics-screen').style.display = 'none';
+            document.getElementById('resources-list-screen').style.display = 'none';
+            document.getElementById('resource-detail-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'none';
             document.querySelector('.stats').style.display = 'flex';
             document.getElementById('question-screen').style.display = 'block';
